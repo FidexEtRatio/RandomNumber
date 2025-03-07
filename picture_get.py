@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, timezone
 
 # resolutions preffered: 4096, 2048
-# analysis codes available: 0335, 0094, 0131, 0171, 0193
+# analysis codes available: 0335, 0094, 0131, 0171
 
 # list of filters
 analysis_code = ["0335", "0094", "0131", "0171"]
