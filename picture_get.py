@@ -4,10 +4,10 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta, timezone
 
 # resolutions preffered: 4096, 2048
-# analysis codes available: 0335, 0094, 0131, 0171
+# analysis codes available: HMI171, 0131, 211193171n, 0094
 
 # list of filters
-analysis_code = ["0335", "0094", "0131", "0171"]
+analysis_code = ["HMI171", "0131", "211193171n", "0094"]
 resolutions = ["4096_", "2048_"]
 
 # directory to save
