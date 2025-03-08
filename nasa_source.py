@@ -5,10 +5,10 @@ from datetime import datetime, timedelta, timezone
 
 def get_current_sun_data():
     # resolutions preffered: 4096, 2048
-    # analysis codes available: HMI171, 0131, 211193171n, 0094
+    # analysis codes available: HMI171, 0131, 211193171n, 0171
 
     # list of filters
-    analysis_code = ["HMI171", "0131", "211193171n", "0094"]
+    analysis_code = ["HMI171", "0131", "211193171n", "0171"]
     resolutions = ["4096_", "2048_"]
 
     # directory to save
