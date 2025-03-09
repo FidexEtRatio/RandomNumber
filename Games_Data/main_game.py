@@ -2,6 +2,11 @@ from fetch_data import fetch_data
 from analyze_data import analyze_data
 from delay import apply_rate_limit  # delay function
 
+
+# at the moment i have a problem with fetching the data
+# Error fetching data: 403 - {"status":{"message":"Forbidden","status_code":403}}
+
+
 # API Details
 API_URL = "https://euw1.api.riotgames.com"  # Riot Games API base URL
 API_KEY = "RGAPI-6b6f6c81-e2a3-4ab3-b423-bffe0d9ec120"
@@ -14,15 +19,11 @@ REQUEST_WINDOW_120S = 120  # Time window for 2-minute limit
 requests_made = 0  # Counter for requests made in the current session
 
 # User-specified type
-data_type = input("Enter data type (stats/videos/tournaments): ")
-endpoint_map = {
-    "stats": "lol/summoner/v4/summoners/by-name/florentinivan10",  # Endpoint for summoner stats
-    "videos": "game-videos",  # Placeholder for videos endpoint
-    "tournaments": "match-tournaments"  # Placeholder for tournaments endpoint
-}
+data_type = "stats"
 
-endpoint = endpoint_map.get(data_type)
-if endpoint:
+if data_type == "stats":
+    endpoint = "lol/summoner/v4/summoners/by-name/florentinivan10"  # Endpoint for summoner stats
+
     # Loop for multiple requests or testing
     while True:
         # Apply rate limits
@@ -40,4 +41,4 @@ if endpoint:
         # Stop the loop after one request for demo purposes (you can remove this for continuous requests)
         break
 else:
-    print("Invalid data type!")
+    print("Invalid data type! Only 'stats' is supported.")
