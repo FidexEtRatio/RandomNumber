@@ -19,7 +19,7 @@ def get_value():
     rgb_arr = []
     fft_arr = []
     for img in img_array:
-        print(f"Extracting RGB & FFT Data from source #{len(rgb_arr) + 1}...")
+        print(f"Extracting RGB & FFT Data from image #{len(rgb_arr) + 1}...")
         rgb_data = extract_data_rgb(img)
         fft_data = extract_data_fft(img)
         rgb_arr.append(rgb_data)
