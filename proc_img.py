@@ -67,6 +67,6 @@ def hash_binary_string(bin_str):
     binary_data = int(bin_str, 2).to_bytes((len(bin_str) + 7) // 8, byteorder='big')
     
     # hash data
-    hashed = hashlib.sha256(binary_data).hexdigest()
+    hashed = hashlib.sha3_512(binary_data).hexdigest()
     
     return hashed
