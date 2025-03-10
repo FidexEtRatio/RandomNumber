@@ -1,6 +1,6 @@
 import numpy as np
 from math import log2
-from fetch_and_record import fetch_radio_station, record_stream
+from fetch_and_record import fetch_radio_stations, record_stream
 
 # Calculate Shannon Entropy from byte data
 def calculate_entropy(audio_bytes):
@@ -12,7 +12,7 @@ def calculate_entropy(audio_bytes):
 
 # Example usage
 if __name__ == "__main__":
-    stream_url = fetch_radio_station()
+    stream_url = fetch_radio_stations()
     if stream_url:
         print(f"Selected stream URL: {stream_url}")
         audio_data = record_stream(stream_url)
