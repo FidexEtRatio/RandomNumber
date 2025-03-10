@@ -1,6 +1,8 @@
 from nasa_source import get_current_sun_data
 from entropy import get_entropy
 from local_source import get_images, cleanup
+from img_data_extract import extract_data_fft, extract_data_rgb
+from proc_img import get_value
 
 #def generate():
 #    num = 0
@@ -28,6 +30,33 @@ from local_source import get_images, cleanup
 #if __name__ == "__main__":
 #    main()
 
+get_current_sun_data()
+val = get_value()
+print(val)
+
+#val1 = extract_data_rgb("images/20250310_154745_4096_211193171n.jpg")
+#print(len(val1))
+#print(val1)
+#print("\n----------------------------------\n")
+#
+#val1 = extract_data_rgb("images/20250310_144447_4096_HMI171.jpg")
+#print(len(val1))
+#print(val1)
+#print("\n----------------------------------\n")
+#
+#val1 = extract_data_rgb("images/20250310_154520_4096_0131.jpg")
+#print(len(val1))
+#print(val1)
+#print("\n----------------------------------\n")
+#
+#val1 = extract_data_rgb("images/20250310_154746_4096_0171.jpg")
+#print(len(val1))
+#print(val1)
+#print("\n----------------------------------\n")
+
+#val2 = extract_data_fft("images/20250310_154745_4096_211193171n.jpg")
+#print(len(val2))
+#print(val2)
 #get_current_sun_data()
 #img_list_test = get_images()
 #print("Images found: ", img_list_test)
