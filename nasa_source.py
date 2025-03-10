@@ -28,7 +28,7 @@ def get_current_sun_data():
 
         # root url
         url = f"https://sdo.gsfc.nasa.gov/assets/img/browse/{date_f}/"
-        print(f"Checking root url: {url}\n")
+        print(f"Checking root url: {url}...")
 
         #fetch webpage
         response = requests.get(url)
@@ -51,7 +51,7 @@ def get_current_sun_data():
                     image_name = next((img for img in available_imgs if img.endswith(f"{res}{code}.jpg")), None)
                     if image_name:
                         matching_imgs[code] = image_name
-                        print(f"Found {image_name} for code {code}\n")
+                        print(f"Found {image_name} for code {code}...")
                         if len(matching_imgs) == 4:
                             break
                 if len(matching_imgs) == 4:
@@ -77,9 +77,9 @@ def get_current_sun_data():
         if img_resp.status_code == 200:
             with open(saving_path, "wb") as file:
                 file.write(img_resp.content)
-            print(f"Downloaded {img_name} to {saving_path}\n")
+            print(f"Downloaded {img_name} to {saving_path}...")
         else:
-            print(f"Failed to download {img_name}\n")
+            print(f"Failed to download {img_name}")
             success = False
 
     if success:
