@@ -63,10 +63,10 @@ def list_to_binary_string(list):
     return bin_str
 
 def hash_binary_string(bin_str):
-    # Convert the binary string to bytes
+    # convert binary string to bytes
     binary_data = int(bin_str, 2).to_bytes((len(bin_str) + 7) // 8, byteorder='big')
     
-    # Hash the binary data using SHA-256
+    # hash data
     hashed = hashlib.sha256(binary_data).hexdigest()
     
     return hashed
