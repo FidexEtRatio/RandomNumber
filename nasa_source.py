@@ -36,7 +36,13 @@ def get_current_sun_data():
         if response.status_code == 200:
            # parse webpage
             soup = BeautifulSoup(response.text, "html.parser")
-            available_imgs = {a["href"] for a in soup.find_all("a") if a["href"].endswith(".jpg")}
+
+            # sort images by hour to find only the latest ones
+            available_imgs = sorted(
+                (a["href"] for a in soup.find_all("a") if a["href"].endswith(".jpg")),
+                key=lambda img: img.split("_")[1],
+                reverse=True
+            )
 
             #filter images
             matching_imgs = {}
