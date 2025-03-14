@@ -4,14 +4,10 @@ from generator import generate
 
 def main():
     base = get_base()
-    rand_num = generate(base, get_seed(), 1, 1000)
-    print(f"\n\n--- Random Number: {rand_num} ---")
-
-    rand_num = generate(base, get_seed(), 1, 1000)
-    print(f"\n\n--- Random Number: {rand_num} ---")
-
-    rand_num = generate(base, get_seed(), 1, 1000)
-    print(f"\n\n--- Random Number: {rand_num} ---")
+    for i in range(10):
+        with open('numbers.txt', 'a') as file:
+            rand_num = generate(base, get_seed(), 1, 1000)
+            file.write(str(rand_num) + " ")  # Write the number to the file as a string
 
 if __name__ == "__main__":
     main()
