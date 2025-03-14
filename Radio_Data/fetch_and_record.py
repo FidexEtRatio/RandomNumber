@@ -27,17 +27,6 @@ def fetch_radio_stations():
 
 
 
-# Validate if a radio stream works
-def validate_stream(stream_url):
-    try:
-        response = requests.get(stream_url, stream=True, timeout=5)  # Short timeout for validation
-        response.raise_for_status()
-        print(f"Stream {stream_url} is valid.")
-        return True
-    except Exception as e:
-        print(f"Stream {stream_url} is invalid: {e}")
-        return False
-
 # Record audio from the stream
 def record_stream(stream_url, duration=5):
     try:

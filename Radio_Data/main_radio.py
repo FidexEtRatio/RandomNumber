@@ -13,7 +13,7 @@ def apply_sha3_512(data):
     sha3_hash = hashlib.sha3_512(data).hexdigest()
     return sha3_hash
 
-def main():
+def radio_data():
     min_entropy_threshold = 7.90  # Set the minimum acceptable entropy value
 
     # Step 1: Fetch and shuffle radio stations once
@@ -77,6 +77,7 @@ def main():
     # Step 4: Apply SHA3-512 Hash
     hash_result = apply_sha3_512(combined_data)
     print(f"SHA3-512 Hash of the combined audio streams: {hash_result}")
+    return hash_result
 
 if __name__ == "__main__":
-    main()
+    radio_data()
