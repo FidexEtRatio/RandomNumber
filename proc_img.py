@@ -1,18 +1,44 @@
 import hashlib
 from img_data_extract import extract_data_fft, extract_data_rgb
 from local_img_source import get_images, cleanup
+from nasa_source import get_current_sun_data
 
-def rotate_right(value, n):
-    if value > 0xFFFFFFFF:
-        print(f"Warning: Value is too large for 32-bit operation: {value}")
-    n = n % 32  # Ensure that the number of bits to rotate is within 0-31 range
-    value = value & 0xFFFFFFFF  # Ensure the value is within 32-bit bounds
-    return ((value >> n) | (value << (32 - n))) & 0xFFFFFFFF
+def rotate_right(n, k):
+    if n == 0 or n == 1:
+        return n
+    
+    msb = get_msb(n)
+    k %= msb
+    mask = create_mask(n)
+    k_tmp = k
+    while k_tmp != 0:
+        mask <<= 1
+        k_tmp -= 1
+    rot = (~mask) & n
+    rot <<= msb - k + 1
+    rot |= n >> k
+    return rot
+    
+def get_msb(n):
+    pos = 0
+    while n != 1:
+        n >>= 1
+        pos += 1
+    return pos
+
+def create_mask(n):
+    mask = 0b1
+    while n > 1:
+        mask <<= 1
+        mask |= 1
+        n >>= 1
+    return mask
 
 def xor_arrays(arr1, arr2):
     return [int(x) & 0xFFFFFFFF ^ int(y) & 0xFFFFFFFF for x, y in zip(arr1, arr2)]
 
 def get_base():
+    get_current_sun_data()
     img_array = get_images()
     print("Images loaded into program!")
     
