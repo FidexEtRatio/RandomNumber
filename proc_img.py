@@ -40,7 +40,7 @@ def xor_arrays(arr1, arr2):
 def get_base():
     get_current_sun_data()
     img_array = get_images()
-    print("Images loaded into program!")
+    print("Images loaded into program...")
     
     rgb_arr = []
     fft_arr = []

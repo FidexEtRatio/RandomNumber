@@ -83,7 +83,7 @@ def get_current_sun_data():
             success = False
 
     if success:
-        print("Data fetched successfully!")
+        print("Data fetched successfully...")
     else:
         print("Error in fetching all data!")
     

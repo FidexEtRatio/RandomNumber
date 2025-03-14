@@ -17,9 +17,7 @@ def fetch_radio_stations():
     if stations:
         # Shuffle stations deterministically or once before returning
         shuffled_stations = deterministic_shuffle(stations)  # Only shuffle once
-        print("Shuffled stations:")
-        for station in shuffled_stations:
-            print(f"{station['name']}: {station['url_resolved']}")
+        print(f"Found #{len(shuffled_stations)} stations. Checking entropy for each...")
         return shuffled_stations
     else:
         print("No stations found.")

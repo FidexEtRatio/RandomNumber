@@ -26,7 +26,7 @@ def get_seed():
     audio_data_list = []
     for i, station in enumerate(all_stations, start=1):
         while True:  # Keep trying for a valid stream with sufficient entropy
-            print(f"\n--- Recording {i}: {station['name']} ---")
+            print(f"Recording #{i} station: {station['name']}...")
             stream_url = station['url_resolved']
 
             audio_data = record_stream(stream_url, duration=5)
@@ -34,18 +34,17 @@ def get_seed():
                 print(f"Failed to record audio from {station['name']}. Trying next station...")
                 break  # Move to the next station if recording fails
 
-            print(f"Audio recorded successfully from {station['name']}.")
+            print(f"Audio recorded successfully from {station['name']}...")
             audio_bytes = audio_data.getvalue()
 
             # Calculate entropy
             entropy = calculate_entropy(audio_bytes)
-            print(f"Shannon Entropy of the audio from {station['name']}: {entropy}")
 
             if entropy >= min_entropy_threshold:
                 audio_data_list.append(audio_bytes)
                 break  # Exit loop when entropy is acceptable
             else:
-                print(f"Entropy too low ({entropy}). Moving to next station...")
+                print("Entropy too low. Moving to next station...")
                 break  # Move to the next station if entropy is too low
 
         # Stop early if we already have two valid streams
@@ -54,10 +53,10 @@ def get_seed():
 
     # Fallback: Use the last available stations if two high-entropy streams are not found
     if len(audio_data_list) < 2:
-        print("Could not find two high-entropy streams. Using available streams.")
+        print("Could not find two high-entropy streams. Using available streams...")
         # Fill with what you have, even if entropy is below the threshold
         for station in all_stations[len(audio_data_list):2]:  # Take remaining stations if available
-            print(f"\n--- Using fallback station: {station['name']} ---")
+            print(f"Using fallback station: {station['name']}...")
             stream_url = station['url_resolved']
             audio_data = record_stream(stream_url, duration=5)
             if audio_data:
@@ -72,9 +71,7 @@ def get_seed():
     # Step 3: Combine the two audio streams
     combined_data = combine_audio_streams(audio_data_list[0], audio_data_list[1])
     combined_entropy = calculate_entropy(combined_data)
-    print(f"Shannon Entropy of the combined audio streams: {combined_entropy}")
 
     # Step 4: Apply SHA3-512 Hash
     hash_result = apply_sha3_512(combined_data)
-    print(f"SHA3-512 Hash of the combined audio streams: {hash_result}")
     return hash_result
