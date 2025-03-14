@@ -12,6 +12,6 @@ def cleanup():
     for file in get_images():
         try:
             os.remove(file)
-            print(f"Successfully removed {file}\n")
+            print(f"Successfully removed {file}...")
         except Exception:
             print(f"Error deleting {file}: {Exception}")

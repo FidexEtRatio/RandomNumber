@@ -17,4 +17,5 @@ def generate(base, seed, beg, end):
     bit_len = (rand % (2048 - 128 + 1)) + 128
     rand = rand & ((1 << bit_len) - 1)
     rand = rand % (end - beg + 1) + beg
+    print("\n!!! A random number has been generated !!!\n")
     return rand
