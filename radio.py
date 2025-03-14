@@ -13,7 +13,7 @@ def apply_sha3_512(data):
     sha3_hash = hashlib.sha3_512(data).hexdigest()
     return sha3_hash
 
-def get_sys_entropy_and_radio_seed():
+def get_seed():
     min_entropy_threshold = 7.90  # Set the minimum acceptable entropy value
 
     # Step 1: Fetch and shuffle radio stations once

@@ -12,7 +12,7 @@ def rotate_right(value, n):
 def xor_arrays(arr1, arr2):
     return [int(x) & 0xFFFFFFFF ^ int(y) & 0xFFFFFFFF for x, y in zip(arr1, arr2)]
 
-def get_value():
+def get_base():
     img_array = get_images()
     print("Images loaded into program!")
     
