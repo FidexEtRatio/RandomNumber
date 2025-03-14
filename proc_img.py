@@ -1,6 +1,6 @@
 import hashlib
 from img_data_extract import extract_data_fft, extract_data_rgb
-from local_source import get_images, cleanup
+from local_img_source import get_images, cleanup
 
 def rotate_right(value, n):
     if value > 0xFFFFFFFF:
