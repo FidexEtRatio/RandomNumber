@@ -1,13 +1,5 @@
 import numpy
 from PIL import Image
-from system_entropy import get_hardware_seed
-
-def xorshift128plus(seed1, seed2):
-    s0, s1 = seed1, seed2
-    t = s0
-    s0 = s1
-    s1 = s1 ^ (s1 >> 23) ^ (t ^ (t >> 17) ^ (s0 ^ (s0 >> 26)))
-    return s1 + s0
 
 # extract data from the rgb values of the picture
 def extract_data_rgb(img_path):
@@ -28,7 +20,6 @@ def extract_data_rgb(img_path):
     for y in range(0, center_height, step):
         for x in range(0, center_width, step):
             pixel = center_region[y, x]
-            pixel = xorshift128plus(pixel % (2 ** 64), get_hardware_seed() % (2 ** 64))
             entropy_val.extend(pixel)
             step = 128 + (x + y) % 129 # step for extra variation
     

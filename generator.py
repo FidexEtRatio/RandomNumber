@@ -1,7 +1,7 @@
 from system_entropy import get_hardware_seed
 import hashlib
 
-def generate(base, seed, beg, end):
+def generate(base, seed, beg, end, count):
     base = base.encode() if isinstance(base, str) else base
     seed = seed.encode() if isinstance(seed, str) else seed
 
@@ -17,5 +17,5 @@ def generate(base, seed, beg, end):
     bit_len = (rand % (2048 - 128 + 1)) + 128
     rand = rand & ((1 << bit_len) - 1)
     rand = rand % (end - beg + 1) + beg
-    print("\n!!! A random number has been generated !!!\n")
+    print(f"\n!!! Random number #{count}(session) has been generated !!!\n")    
     return rand

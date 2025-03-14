@@ -4,10 +4,12 @@ from generator import generate
 
 def main():
     base = get_base()
-    for i in range(10):
+    count = 1
+    for i in range(30):
         with open('numbers.txt', 'a') as file:
-            rand_num = generate(base, get_seed(), 1, 1000)
-            file.write(str(rand_num) + " ")  # Write the number to the file as a string
+            rand_num = generate(base, get_seed(), 1, 500, count)
+            count += 1
+            file.write(str(rand_num) + ", ")  # Write the number to the file as a string
 
 if __name__ == "__main__":
     main()
