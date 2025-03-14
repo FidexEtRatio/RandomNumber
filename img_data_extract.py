@@ -1,6 +1,5 @@
 import numpy
 from PIL import Image
-import hashlib
 
 # extract data from the rgb values of the picture
 def extract_data_rgb(img_path):
