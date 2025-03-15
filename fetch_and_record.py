@@ -13,7 +13,7 @@ def deterministic_shuffle(stations):
 
 def fetch_radio_stations():
     rb = RadioBrowser()
-    stations = rb.search(limit=20)  # Fetch more stations for diversity
+    stations = rb.search(limit=50)  # Fetch more stations for diversity
     if stations:
         # Shuffle stations deterministically or once before returning
         shuffled_stations = deterministic_shuffle(stations)  # Only shuffle once
