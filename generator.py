@@ -1,5 +1,6 @@
 from system_entropy import get_hardware_seed
 import hashlib
+from datetime import datetime
 
 def generate(base, seed, beg, end, count):
     base = base.encode() if isinstance(base, str) else base
@@ -17,5 +18,9 @@ def generate(base, seed, beg, end, count):
     bit_len = (rand % (2048 - 128 + 1)) + 128
     rand = rand & ((1 << bit_len) - 1)
     rand = rand % (end - beg + 1) + beg
-    print(f"\n!!! Random number #{count}(session) has been generated !!!\n")    
+    from datetime import datetime
+
+    current_time = datetime.now().strftime("%H:%M:%S")
+
+    print(f"\n!!! Random number #{count}(session) has been generated ({current_time})!!!\n")    
     return rand
