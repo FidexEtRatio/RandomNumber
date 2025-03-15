@@ -2,6 +2,7 @@ import requests
 from io import BytesIO
 from pyradios import RadioBrowser
 from system_entropy import get_hardware_seed  # Import the custom random number generator
+import httpcore  # For handling specific timeout exceptions
 
 def deterministic_shuffle(stations):
     # Generate a "random-like" seed
@@ -23,12 +24,22 @@ def fetch_radio_stations():
         print("No stations found.")
         return []
 
-
+def verify_url(stream_url):
+    try:
+        response = requests.head(stream_url, timeout=5)  # Use a HEAD request for quick verification
+        response.raise_for_status()  # Raise an error for HTTP response codes >= 400
+        return True
+    except requests.exceptions.RequestException as e:
+        return False
 
 # Record audio from the stream
 def record_stream(stream_url, duration=5):
+    if not verify_url(stream_url):
+        print("Skipping this station due to verification failure.")
+        return None
+
     try:
-        response = requests.get(stream_url, stream=True, timeout=10)  # Timeout after 10 seconds
+        response = requests.get(stream_url, stream=True, timeout=20)  # Increased timeout for slower stations
         response.raise_for_status()
         audio_data = BytesIO()
         for chunk in response.iter_content(chunk_size=1024):
@@ -36,10 +47,11 @@ def record_stream(stream_url, duration=5):
             if audio_data.tell() >= duration * 44100 * 2:  # Approx. 5 seconds of audio
                 break
         return audio_data
+    except httpcore.ReadTimeout:
+        print(f"Stream timed out for URL: {stream_url}. Moving to the next station...")
     except Exception as e:
         print(f"Error recording stream: {e}")
     return None
-
 
 # Example usage of the new random generator
 def pick_random_station():
