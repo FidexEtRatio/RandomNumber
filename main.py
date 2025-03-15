@@ -5,7 +5,7 @@ from generator import generate
 def main():
     base = get_base()
     count = 1
-    for i in range(100):
+    for i in range(20):
         with open('numbers.txt', 'ab') as file:
             rand_num = generate(base, get_seed(), 1, 100000, count)
             count += 1
