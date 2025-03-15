@@ -12,16 +12,45 @@ def deterministic_shuffle(stations):
     shuffled_stations = sorted(stations, key=lambda s: (seed + hash(s['name'])) % len(stations))
     return shuffled_stations
 
+import requests
+
 def fetch_radio_stations():
-    rb = RadioBrowser()
-    stations = rb.search(limit=50)  # Fetch more stations for diversity
-    if stations:
-        # Shuffle stations deterministically or once before returning
-        shuffled_stations = deterministic_shuffle(stations)  # Only shuffle once
-        print(f"Found #{len(shuffled_stations)} stations. Checking entropy for each...")
-        return shuffled_stations
-    else:
-        print("No stations found.")
+    rb = RadioBrowser()  # Initialize the RadioBrowser client
+    try:
+        # Fetch stations using the RadioBrowser API
+        stations = rb.search(limit=50)  # Fetch up to 50 stations
+        if stations:
+            # Shuffle stations deterministically before returning
+            shuffled_stations = deterministic_shuffle(stations)
+            print(f"Found #{len(shuffled_stations)} stations. Verifying URLs...")
+
+            valid_stations = []  # List to store stations with valid URLs
+            for station in shuffled_stations:
+                try:
+                    # Verify the URL of each station
+                    response = requests.head(station['url_resolved'], timeout=5)  # Use HEAD for quick check
+                    response.raise_for_status()  # Raise exception for invalid status codes
+                    print(f"URL verified: {station['url_resolved']}")
+                    valid_stations.append(station)  # Add valid station to the list
+                except Exception as e:
+                    # Log and skip any station with an invalid or unreachable URL
+                    print(f"Skipping station due to URL error: {e}. Moving to the next one.")
+
+            if valid_stations:
+                return valid_stations  # Return the list of valid stations
+            else:
+                print("No valid stations found after URL verification.")
+                return []
+        else:
+            print("No stations found.")
+            return []
+    except requests.exceptions.HTTPError as e:
+        # Handle HTTP errors (e.g., 502 Bad Gateway)
+        print(f"HTTP error while fetching stations: {e}")
+        return []
+    except Exception as e:
+        # Handle unexpected errors
+        print(f"An unexpected error occurred while fetching stations: {e}")
         return []
 
 def verify_url(stream_url):
