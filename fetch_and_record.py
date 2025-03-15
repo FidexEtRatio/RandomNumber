@@ -22,7 +22,6 @@ def fetch_radio_stations():
         if stations:
             # Shuffle stations deterministically before returning
             shuffled_stations = deterministic_shuffle(stations)
-            print(f"Found #{len(shuffled_stations)} stations. Verifying URLs...")
 
             valid_stations = []  # List to store stations with valid URLs
             for station in shuffled_stations:
@@ -30,7 +29,6 @@ def fetch_radio_stations():
                     # Verify the URL of each station
                     response = requests.head(station['url_resolved'], timeout=5)  # Use HEAD for quick check
                     response.raise_for_status()  # Raise exception for invalid status codes
-                    print(f"URL verified: {station['url_resolved']}")
                     valid_stations.append(station)  # Add valid station to the list
                 except Exception as e:
                     # Log and skip any station with an invalid or unreachable URL
@@ -39,7 +37,6 @@ def fetch_radio_stations():
             if valid_stations:
                 return valid_stations  # Return the list of valid stations
             else:
-                print("No valid stations found after URL verification.")
                 return []
         else:
             print("No stations found.")
