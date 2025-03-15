@@ -32,7 +32,7 @@ def fetch_radio_stations():
                     valid_stations.append(station)  # Add valid station to the list
                 except Exception as e:
                     # Log and skip any station with an invalid or unreachable URL
-                    print(f"Skipping station due to URL error: {e}. Moving to the next one.")
+                    pass
 
             if valid_stations:
                 return valid_stations  # Return the list of valid stations
