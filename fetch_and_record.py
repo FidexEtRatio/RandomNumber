@@ -6,6 +6,7 @@ from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 import time
+from system_entropy import get_hardware_seed
 
 # Verify URLs in parallel for speed optimization
 def verify_url_concurrently(stations):
@@ -17,21 +18,9 @@ def verify_url_concurrently(stations):
         except Exception:
             return None  # Invalid or unreachable
 
-    with ThreadPoolExecutor(max_workers=10) as executor:  # Limit number of threads
+    with ThreadPoolExecutor(max_workers=10) as executor:
         results = executor.map(verify, stations)
     return [station for station in results if station is not None]  # Filter valid stations
-
-
-# Deterministic shuffling with dynamic seeding
-def deterministic_shuffle(stations):
-    # Import get_hardware_seed() from the external file
-    from system_entropy import get_hardware_seed
-
-    # Use the seed to create a deterministic sorting key for each station
-    seed = get_hardware_seed()
-    shuffled_stations = sorted(stations, key=lambda s: (seed + hash(s['name'])) % len(stations))
-    return shuffled_stations
-
 
 # Fetch radio stations with caching and error handling
 def fetch_radio_stations():
@@ -39,7 +28,6 @@ def fetch_radio_stations():
     cache_timeout = 3600  # Refresh cache every 1 hour
     rb = RadioBrowser()
 
-    # Attempt to load stations from cache
     try:
         if os.path.exists(cache_file):
             last_modified = os.path.getmtime(cache_file)
@@ -48,36 +36,31 @@ def fetch_radio_stations():
                     valid_stations = json.load(f)
                     return valid_stations
     except (FileNotFoundError, json.JSONDecodeError):
-        pass  # Cache doesn't exist or is invalid, proceed to fetch fresh stations
+        pass  # Cache doesn't exist or is invalid
 
-    # Fetch stations and update cache if necessary
     try:
         stations = rb.search(limit=100)  # Fetch up to 100 stations
-        if stations:
-            shuffled_stations = deterministic_shuffle(stations)
-            valid_stations = verify_url_concurrently(shuffled_stations)
+
+        # ✅ **Filter only HTTPS stations** before checking validity
+        https_stations = [s for s in stations if s['url_resolved'].startswith("https")]
+
+        if https_stations:
+            seed = get_hardware_seed()
+            https_stations.sort(key=lambda s: (seed + hash(s['name'])) % len(https_stations))  # Entropy-based shuffle
+            valid_stations = verify_url_concurrently(https_stations)
+
             if valid_stations:
                 with open(cache_file, "w") as f:
                     json.dump(valid_stations, f)
                 return valid_stations
-        return []
+
+        return []  # No valid HTTPS stations found
     except requests.exceptions.HTTPError as e:
         print(f"HTTP error while fetching stations: {e}")
         return []
     except Exception as e:
         print(f"An unexpected error occurred while fetching stations: {e}")
         return []
-
-
-# Verify individual URLs
-def verify_url(stream_url):
-    try:
-        response = requests.head(stream_url, timeout=5)  # Use a HEAD request for quick verification
-        response.raise_for_status()  # Raise an error for HTTP response codes >= 400
-        return True
-    except requests.exceptions.RequestException:
-        return False
-
 
 # Record audio from the stream with adaptive timeout
 def record_stream(stream_url, duration=5):
@@ -102,20 +85,14 @@ def record_stream(stream_url, duration=5):
     print(f"Stream timed out for URL: {stream_url}. Moving to the next station...")
     return None
 
-
-# Randomly select a station with entropy influence
+# Select a station based on entropy-derived index
 def pick_random_station(last_entropy=0):
-    # Import get_hardware_seed() from the external file
-    from system_entropy import get_hardware_seed
-
     stations = fetch_radio_stations()
     if stations:
-        # Combine hardware seed and entropy from the last station
-        random_index = (get_hardware_seed() + int(last_entropy)) % len(stations)
-        selected_station = stations[random_index]
-
-        # Update last_entropy dynamically based on the selected station's name
-        last_entropy = sum(map(ord, selected_station['name'])) % 100  # Example: Sum of character codes mod 100
+        seed = get_hardware_seed() + last_entropy
+        index = seed % len(stations)  # Use entropy to select an index
+        selected_station = stations[index]
+        last_entropy = sum(map(ord, selected_station['name'])) % 100  # Update entropy factor
 
         print(f"Selected station: {selected_station['name']}: {selected_station['url_resolved']}")
         print(f"Updated last_entropy: {last_entropy}")
