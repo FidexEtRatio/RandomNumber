@@ -8,7 +8,7 @@ def get_current_sun_data():
     # analysis codes available: HMI171, 0131, 211193171n, 0171
 
     # list of filters
-    analysis_code = ["HMI171", "0131", "211193171n", "0171"]
+    analysis_code = ["0094", "0131", "211193171n", "0171"]
     resolutions = ["4096_", "2048_"]
 
     # directory to save
