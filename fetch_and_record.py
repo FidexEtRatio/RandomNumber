@@ -25,28 +25,26 @@ def verify_url_concurrently(stations):
 # Fetch radio stations with caching and error handling
 def fetch_radio_stations():
     cache_file = "valid_stations.json"
-    cache_timeout = 3600  # Refresh cache every 1 hour
+    cache_timeout = 600  # Refresh every 10 minutes
+
+    # Check if cache exists and is still valid
+    if os.path.exists(cache_file):
+        last_modified = os.path.getmtime(cache_file)
+        if time.time() - last_modified < cache_timeout:
+            with open(cache_file, "r") as f:
+                return json.load(f)  # Use cached data
+
+    # If cache is too old, refresh it
+    if os.path.exists(cache_file):
+        os.remove(cache_file)
+        print("Cache cleared! Fetching fresh stations.")
+
     rb = RadioBrowser()
-
     try:
-        if os.path.exists(cache_file):
-            last_modified = os.path.getmtime(cache_file)
-            if time.time() - last_modified < cache_timeout:
-                with open(cache_file, "r") as f:
-                    valid_stations = json.load(f)
-                    return valid_stations
-    except (FileNotFoundError, json.JSONDecodeError):
-        pass  # Cache doesn't exist or is invalid
-
-    try:
-        stations = rb.search(limit=100)  # Fetch up to 100 stations
-
-        # ✅ **Filter only HTTPS stations** before checking validity
+        stations = rb.search(limit=200)  # Fetch up to 200 stations
         https_stations = [s for s in stations if s['url_resolved'].startswith("https")]
 
         if https_stations:
-            seed = get_hardware_seed()
-            https_stations.sort(key=lambda s: (seed + hash(s['name'])) % len(https_stations))  # Entropy-based shuffle
             valid_stations = verify_url_concurrently(https_stations)
 
             if valid_stations:
@@ -54,13 +52,11 @@ def fetch_radio_stations():
                     json.dump(valid_stations, f)
                 return valid_stations
 
-        return []  # No valid HTTPS stations found
-    except requests.exceptions.HTTPError as e:
-        print(f"HTTP error while fetching stations: {e}")
         return []
     except Exception as e:
-        print(f"An unexpected error occurred while fetching stations: {e}")
+        print(f"Error fetching stations: {e}")
         return []
+
 
 # Record audio from the stream with adaptive timeout
 def record_stream(stream_url, duration=5):
@@ -91,6 +87,10 @@ def pick_random_station(last_entropy=0):
     if stations:
         seed = get_hardware_seed() + last_entropy
         index = seed % len(stations)  # Use entropy to select an index
+        # if you want a better index. in test time 
+        # time_entropy = int(time.time()) % 100  # Adds a constantly changing factor
+        # seed = get_hardware_seed() + last_entropy + time_entropy
+        # index = (seed * (last_entropy + 1) + 23) % len(stations)  # Enhanced variation
         selected_station = stations[index]
         last_entropy = sum(map(ord, selected_station['name'])) % 100  # Update entropy factor
 
