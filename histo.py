@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Replace 'data.bin' with your actual file path
-file_path = 'data.bin'
+file_path = 'batch.bin'
 
 # Read the binary file and extract 2-byte numbers
 numbers = []
