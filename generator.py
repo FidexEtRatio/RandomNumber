@@ -30,11 +30,13 @@ def generate(base, seed, beg, end, count):
     seed = seed.encode() if isinstance(seed, str) else seed
     hw_seed = str(get_hardware_seed()).encode()
 
-    rand = int.from_bytes(hashlib.sha3_512(base + seed + hw_seed).digest(), 'big')
+    # base^seed => bernstein cate 64/4 B / dim max = nr pe 2 B
+
+    rand = int.from_bytes(hashlib.sha3_512(base + hashlib.sha3_512(seed + hw_seed).digest()).digest(), 'big')
     
     for _ in range(3):  # 3 more rounds
         hw_seed = str(get_hardware_seed()).encode()
-        rand ^= int.from_bytes(hashlib.sha3_512(base + seed + hw_seed).digest(), 'big')
+        rand ^= int.from_bytes(hashlib.sha3_512(base + hashlib.sha3_512(seed + hw_seed).digest()).digest(), 'big')
 
     rand %= (end - beg + 1) + beg
     print(f"\n!!! Random number #{count}(session) generated ({datetime.now().strftime('%H:%M:%S')})!!!\n")
