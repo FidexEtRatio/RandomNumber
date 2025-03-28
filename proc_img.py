@@ -1,4 +1,3 @@
-import hashlib
 from img_data_extract import extract_data_fft, extract_data_rgb
 from local_img_source import get_images, cleanup
 from nasa_source import get_current_sun_data
