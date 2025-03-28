@@ -1,13 +1,15 @@
-from proc_img import get_base
+from proc_img import get_data_for_base
+from base_data import BaseData
 from radio import get_seed
 from generator import generate
 from audio_entropy import calculate_entropy  # Ensure this function exists
 
 def main():
-    base = get_base()
+    base_data_string = get_data_for_base()
+    base = BaseData(base_data_string)
     count = 1
-    total_numbers = 50000  # Target amount
-    batch_size = 1000  # Generate numbers in batches
+    total_numbers = 10000  # Target amount
+    batch_size = 2000  # Generate numbers in batches
 
     entropy_values = []  # Store entropy values for analysis
 
@@ -18,7 +20,7 @@ def main():
             batch_data = bytearray()  # Store generated batch for entropy check
             
             for _ in range(batch_size):
-                rand_num = generate(base, seed, 1, 65530, count)
+                rand_num = generate(base.get_base(), seed, 1, 65530, count)
                 count += 1
                 file.write(rand_num.to_bytes(2, byteorder="big"))
                 batch_data.extend(rand_num.to_bytes(2, byteorder="big"))  # Collect bytes

@@ -30,6 +30,6 @@ def get_data_for_base():
     print("Executing 4th round of XOR-ing...")
     fft_arr2 = xor_arrays(rgb_arr[1], rgb_arr[2])
 
-    base_data = numpy.concatenate(rgb_arr1, rgb_arr2, fft_arr1, fft_arr2)
+    base_data = numpy.hstack((rgb_arr1, rgb_arr2, fft_arr1, fft_arr2))
 
     return base_data

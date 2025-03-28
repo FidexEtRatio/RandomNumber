@@ -1,6 +1,7 @@
 from system_entropy import get_hardware_seed
 import hashlib
 from datetime import datetime
+from bernstein import djb2
 
 # def generate(base, seed, beg, end, count):
 #     base = base.encode() if isinstance(base, str) else base
@@ -27,10 +28,18 @@ from datetime import datetime
 
 def generate(base, seed, beg, end, count):
     base = base.encode() if isinstance(base, str) else base
-    seed = seed.encode() if isinstance(seed, str) else seed
+    seed = str(seed).encode() if not isinstance(seed, bytes) else seed
     hw_seed = str(get_hardware_seed()).encode()
 
     # base^seed => bernstein cate 64/4 B / dim max = nr pe 2 B
+    base = hashlib.sha3_512(base).digest()
+    seed_aux = hashlib.sha3_512(seed).digest()
+
+    base = bytes(a ^ b for a, b in zip(base, seed_aux))
+    base = djb2(base, end)
+
+    base = str(base).encode() if not isinstance(base, bytes) else base
+
 
     rand = int.from_bytes(hashlib.sha3_512(base + hashlib.sha3_512(seed + hw_seed).digest()).digest(), 'big')
     
