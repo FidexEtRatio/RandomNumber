@@ -8,7 +8,7 @@ def main():
     base_data_string = get_data_for_base()
     base = BaseData(base_data_string)
     count = 1
-    total_numbers = 10000  # Target amount
+    total_numbers = 250000  # Target amount
     batch_size = 2000  # Generate numbers in batches
     seeds_per_batch = 5  # Number of seeds to generate at a time
 
