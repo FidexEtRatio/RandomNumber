@@ -69,7 +69,7 @@ def aggregate_entropy_segments(segments):
 
 
 # Generate a high-entropy seed
-def get_seeds(num_seeds=5, min_entropy_threshold=7.90):
+def get_seeds(num_seeds=5, min_entropy_threshold=7.50):
     """
     Generate multiple high-entropy seeds.
     """
