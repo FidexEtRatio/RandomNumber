@@ -1,6 +1,6 @@
 from proc_img import get_data_for_base
 from base_data import BaseData
-from radio import get_seeds
+from radio import get_seed
 from generator import generate
 from audio_entropy import calculate_entropy  # Ensure this function exists
 
@@ -10,18 +10,16 @@ def main():
     count = 1
     total_numbers = 10000  # Target amount
     batch_size = 2000  # Generate numbers in batches
-    seeds_per_batch = 5  # Number of seeds to generate at a time
 
     entropy_values = []  # Store entropy values for analysis
 
     with open('numbers.txt', 'ab') as file:
         for _ in range(total_numbers // batch_size):  
-            seed_list = get_seeds(seeds_per_batch)  # Get multiple seeds
+            seed = get_seed()  # Get a single seed and generate a batch from it
             
             batch_data = bytearray()  # Store generated batch for entropy check
             
-            for i in range(batch_size):
-                seed = seed_list[i % seeds_per_batch]  # Use seeds in a round-robin fashion
+            for _ in range(batch_size):
                 rand_num = generate(base.get_base(), seed, 1, 65530, count)
                 count += 1
                 file.write(rand_num.to_bytes(2, byteorder="big"))
