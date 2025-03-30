@@ -45,7 +45,7 @@ def generate(base, seed, beg, end, count):
     
     for _ in range(3):  # 3 more rounds
         hw_seed = str(get_hardware_seed()).encode()
-        rand ^= int.from_bytes(hashlib.sha3_512(base + hashlib.sha3_512(seed + hw_seed).digest()).digest(), 'big')
+        rand ^= int.from_bytes(hashlib.sha3_512(rand.to_bytes(64, "big", signed=False) + hashlib.sha3_512(seed + hw_seed).digest()).digest(), 'big')
 
     rand %= (end - beg + 1) + beg
     print(f"\n!!! Random number #{count}(session) generated ({datetime.now().strftime('%H:%M:%S')})!!!\n")

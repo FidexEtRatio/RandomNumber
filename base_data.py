@@ -8,4 +8,4 @@ class BaseData:
     def get_base(self):
         base = self.data[self.pos:self.pos+20]
         self.pos = (self.pos + 20) % len(self.data)
-        return djb2(base, 100000)
+        return djb2(base, 60000)
