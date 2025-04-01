@@ -31,27 +31,27 @@ def fetch_radio_stations():
     cache_file = "valid_stations.json"
     cache_timeout = 600  # Refresh every 10 minutes
 
-    # Check for valid cache
     if os.path.exists(cache_file) and (time.time() - os.path.getmtime(cache_file) < cache_timeout):
         with open(cache_file, "r") as f:
-            return json.load(f)  # Return cached stations
+            cached_stations = json.load(f)
+            if any(station['url_resolved'].startswith("https") for station in cached_stations):
+                return cached_stations  # Return cached stations only if they seem valid
 
     print("Fetching new station list...")
-
     rb = RadioBrowser()
     try:
-        stations = rb.search(limit=200)  # Get 200 stations
-        https_stations = [s for s in stations if s['url_resolved'].startswith("https")]
+        stations = rb.search(limit=200)
+        valid_stations = [s for s in stations if s['url_resolved'].startswith("https")]
 
-        valid_stations = verify_url_concurrently(https_stations)
         if valid_stations:
             with open(cache_file, "w") as f:
                 json.dump(valid_stations, f)
         return valid_stations
 
     except Exception as e:
-        print(f"Error fetching stations: {e}")
+        print(f"❌ Error fetching stations: {e}")
         return []
+
 
 # Stream recording with adaptive timeouts
 def record_stream(stream_url, duration=5):
