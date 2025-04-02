@@ -4,7 +4,7 @@ import numpy as np
 import os
 import sys
 
-def gen_histo(file_path):
+def gen_histo(file_path, output):
 
 # Read the binary file and extract 2-byte numbers
     numbers = []
@@ -31,20 +31,21 @@ def gen_histo(file_path):
         fontsize=12, color='black', 
         verticalalignment='top', horizontalalignment='right'
     )
-    plt.savefig(file_path + ".png")
+    plt.savefig(output + ".png")
 
 def main():
     if len(sys.argv) != 2:
-        print("Usage: python randomness_tester.py <file_path>")
+        print("Usage: python histo.py <file_path> <output>")
         sys.exit(1)
     
     file_path = sys.argv[1]
+    output = sys.argv[2]
     
     if not os.path.exists(file_path):
         print("Error: File not found.")
         sys.exit(1)
     
-    gen_histo(file_path)
+    gen_histo(file_path, output)
 
 if __name__ == "__main__":
     main()
