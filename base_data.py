@@ -5,7 +5,7 @@ class BaseData:
     def __init__(self, data):
         self.data = data
         self.pos = 0
-        self.last_run = 0
+        self.last_run = time.time()
 
     def get_base(self):
         base = self.data[self.pos:self.pos+20]
@@ -19,7 +19,7 @@ class BaseData:
     def update_data(self, data):
         self.data = data
         self.pos = 0
-        self.last_run = 0
+        self.last_run = time.time()
 
     def get_len(self):
         return len(self.data)
