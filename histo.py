@@ -16,6 +16,8 @@ def gen_histo(file_path):
             number = struct.unpack('<H', data)[0]  # '<H' for little-endian unsigned short (2 bytes)
             numbers.append(number)
 
+    total_nums = len(numbers)
+
     # Plot the histogram
     plt.figure(figsize=(10, 5))
     plt.hist(numbers, bins=50, edgecolor='black', alpha=0.75)
@@ -23,7 +25,13 @@ def gen_histo(file_path):
     plt.ylabel('Frequency')
     plt.title('Distribution of 2-Byte Numbers in Binary File')
     plt.grid(True)
-    plt.savefig("histogram.png")
+    plt.text(
+        1, 1, f'Total Numbers: {total_nums}', 
+        transform=plt.gca().transAxes, 
+        fontsize=12, color='black', 
+        verticalalignment='top', horizontalalignment='right'
+    )
+    plt.savefig(file_path + ".png")
 
 def main():
     if len(sys.argv) != 2:
