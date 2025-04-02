@@ -34,7 +34,7 @@ def gen_histo(file_path, output):
     plt.savefig(output + ".png")
 
 def main():
-    if len(sys.argv) != 2:
+    if len(sys.argv) != 3:
         print("Usage: python histo.py <file_path> <output>")
         sys.exit(1)
     
