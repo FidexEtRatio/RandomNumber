@@ -8,26 +8,18 @@ from audio_entropy import calculate_entropy  # Ensure this function exists
 def main():
     base_data_string = get_data_for_base()
     base = BaseData(base_data_string)
+    print (f"Base data size: {base.get_len()}")
     count = 1
-    total_numbers = 50000  # Target amount
-    batch_size = 2000  # Generate numbers in batches
+    total_numbers = 1048576  # Target amount
+    batch_size = 65536  # Generate numbers in batches
 
     entropy_values = []  # Store entropy values for analysis
 
-    seed_data_string = get_data_for_seed()
-    seed = SeedData(seed_data_string)
+    seed_data = get_data_for_seed()
+    seed = SeedData(seed_data)
 
-    with open('numbers.txt', 'ab') as file:
+    with open('generated_numbers.bin', 'ab') as file:
         for _ in range(total_numbers // batch_size):  # Each batch = 2000 numbers
-            
-            # 🔄 Fetch fresh radio data for this batch
-            print("🔄 Fetching fresh radio data for this batch...")
-            new_seed_data = get_data_for_seed()  
-            if new_seed_data != b"fallback_seed_value":  
-                seed.update_data(new_seed_data)
-                print(f"✅ Seed updated! New size: {len(new_seed_data)} bytes")
-            else:
-                print("⚠️ Failed to fetch new radio data! Keeping old seed.")
 
             batch_data = bytearray()  # Store batch for entropy calculation
             for _ in range(batch_size):
@@ -39,14 +31,18 @@ def main():
                 batch_data.extend(rand_num.to_bytes(2, byteorder="big"))
 
                 # 📢 Check if seed is exhausted and refresh if needed
-                if seed.about_to_finish():  
-                    print("⚠️ Data from radio has been exhausted. Fetching new data...")
+                if seed.about_to_finish():
+                    print(f"Former seed size: {seed.get_len()}")  
+                    print("Data from radio has been exhausted. Fetching new data...")
                     seed.update_data(get_data_for_seed())
+                if base.about_to_finish():
+                    print("Data from base has been exhausted. Fetching new data...")
+                    base.update_data(get_data_for_base())
 
             # 📊 Calculate entropy of this batch
             entropy = calculate_entropy(batch_data)
             entropy_values.append(entropy)
-            print(f"📊 Batch entropy: {entropy:.5f}")
+            print(f"Batch entropy: {entropy:.5f}")
 
 
     # Compute entropy statistics
@@ -55,10 +51,10 @@ def main():
         low_entropy = min(entropy_values)
         avg_entropy = sum(entropy_values) / len(entropy_values)
 
-        print("\n🔹 **Entropy Report** 🔹")
-        print(f"✅ Peak Entropy: {peak_entropy:.5f} bits/byte")
-        print(f"⚠️ Low Entropy: {low_entropy:.5f} bits/byte")
-        print(f"📊 Average Entropy: {avg_entropy:.5f} bits/byte")
+        print("\n **Entropy Report** ")
+        print(f"Peak Entropy: {peak_entropy:.5f} bits/byte")
+        print(f"Low Entropy: {low_entropy:.5f} bits/byte")
+        print(f"Average Entropy: {avg_entropy:.5f} bits/byte")
 
 if __name__ == "__main__":
     main()

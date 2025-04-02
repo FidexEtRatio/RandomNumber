@@ -24,7 +24,7 @@ def extract_data_rgb(img_path):
             step = 128 + (x + y) % 129 # step for extra variation
     
     # convert to 1d array with a fixed size of 1000
-    return numpy.array(entropy_val, dtype = numpy.uint8).flatten()[:1000]
+    return numpy.array(entropy_val, dtype = numpy.uint8).flatten()
     
 # extract data from the fourier transform
 def extract_data_fft(img_path):
@@ -35,4 +35,4 @@ def extract_data_fft(img_path):
     fft_phase = numpy.angle(fft_result)
 
     # convert to 1d array with a fixed size of 1000
-    return fft_phase.flatten()[:1000]
+    return fft_phase.flatten()

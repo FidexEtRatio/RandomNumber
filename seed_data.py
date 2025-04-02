@@ -20,3 +20,6 @@ class SeedData:
         self.data = data
         self.pos = 0
         self.finish = False
+
+    def get_len(self):
+        return len(self.data)
