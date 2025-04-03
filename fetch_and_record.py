@@ -1,7 +1,7 @@
 import requests
 from io import BytesIO
 from pyradios import RadioBrowser
-import httpcore  # For handling timeout exceptions
+import httpcore
 from concurrent.futures import ThreadPoolExecutor
 import json
 import os
@@ -49,7 +49,7 @@ def fetch_radio_stations():
         return valid_stations
 
     except Exception as e:
-        print(f"❌ Error fetching stations: {e}")
+        print(f"Error fetching stations: {e}")
         return []
 
 

@@ -26,11 +26,11 @@ def main():
                 rand_num = generate(base.get_base(), seed.get_seed(), 1, 65530, count)
                 count += 1
 
-                # 📝 Write to numbers.txt
+                # Write to numbers.txt
                 file.write(rand_num.to_bytes(2, byteorder="big"))
                 batch_data.extend(rand_num.to_bytes(2, byteorder="big"))
 
-                # 📢 Check if seed is exhausted and refresh if needed
+                # Check if seed is exhausted and refresh if needed
                 if seed.about_to_finish():
                     print(f"Former seed size: {seed.get_len()}")  
                     print("Data from radio has been exhausted. Fetching new data...")
@@ -39,7 +39,7 @@ def main():
                     print("Data from base has been exhausted. Fetching new data...")
                     base.update_data(get_data_for_base())
 
-            # 📊 Calculate entropy of this batch
+            # Calculate entropy of this batch
             entropy = calculate_entropy(batch_data)
             entropy_values.append(entropy)
             print(f"Batch entropy: {entropy:.5f}")

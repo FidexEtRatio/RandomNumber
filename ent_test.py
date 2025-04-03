@@ -21,9 +21,9 @@ def run_ent_tests(file_path):
         # Interpret results
         print(f"Entropy: {entropy} (ideal: 8.0)")
         if entropy >= 7.98:
-            print("✅ Entropy test PASSED (indicates randomness)")
+            print("Entropy test PASSED (indicates randomness)")
         else:
-            print("❌ Entropy test FAILED (not sufficiently random)")
+            print("Entropy test FAILED (not sufficiently random)")
         
         if chi_square is not None:
             print(f"Chi-square: {chi_square} (lower is better for randomness)")

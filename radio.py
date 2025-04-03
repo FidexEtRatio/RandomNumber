@@ -15,7 +15,7 @@ def pick_random_station(last_entropy=0):
     selected_station = stations[index]
     last_entropy = sum(map(ord, selected_station['name'])) % 100  
 
-    print(f"🎵 Selected station: {selected_station['name']} -> {selected_station['url_resolved']}")
+    print(f"Selected station: {selected_station['name']} -> {selected_station['url_resolved']}")
     return selected_station, last_entropy
 
 # XOR two audio streams
@@ -29,19 +29,19 @@ def get_valid_station():
     for _ in range(5):  # Try up to 5 times
         station, entropy = pick_random_station()
         if not station:
-            print("❌ No valid station found.")
+            print("No valid station found.")
             continue
 
-        print(f"🎵 Trying to record from station: {station['name']} ({station['url_resolved']})")
+        print(f"Trying to record from station: {station['name']} ({station['url_resolved']})")
         audio_data = record_stream(station['url_resolved'], duration=5)
 
         if audio_data:
-            print(f"✅ Successfully recorded audio from {station['name']}")
+            print(f"Successfully recorded audio from {station['name']}")
             return audio_data.getvalue(), entropy, station  
         else:
-            print(f"⚠️ Failed to record from {station['name']} ({station['url_resolved']})")
+            print(f"Failed to record from {station['name']} ({station['url_resolved']})")
 
-    print("❌ All attempts to record audio failed.")
+    print("All attempts to record audio failed.")
     return None, 0, None  
 
 
