@@ -1,0 +1,8 @@
+numpy
+requests
+pyradios
+matplotlib
+Pillow
+opencv-python
+bs4
+psutil
