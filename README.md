@@ -7,6 +7,13 @@ The purpose of this project is to write an implementation of a TRNG, using sourc
 ## Entropy sources
 - Images of the Sun captured by SOHO in different spectral filters
 - Radio channel data from different radios around the world
+## Setup
+### Clone the repository
+Clone the repository using `git clone https://github.com/Kessel113/RandomNumber`.
+### Install dependencies
+Install the dependencies using `pip install -r requirements.txt`.
+### Usage
+Run the script using `python3 ./main.py`.
 ## Algorithm
 The algorithm uses two main seeds and a secondary one to generate random raw data.
 
