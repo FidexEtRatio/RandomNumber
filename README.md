@@ -25,6 +25,8 @@ The algorithm uses two main seeds and a secondary one to generate random raw dat
 
 For each call of the *generate()* function, both a value from the first source and one from the second one are provided, following the 20-value hash and 50-value hash proccess explained above. Then four rounds of hashing, using the *SHA3 512* hashing alghoritm. After the first round, each resulting string is being converted into an integer and is XOR-ed with the previous result. The final result is being masked to fit in a formerly set interval and it consists of a random raw data value.
 
+Each call of the *generate()* function produces two bytes.
+
 ## Contributions
 The authors would like to give thanks to Iulian Aciobăniței, Phd. Without the proffessor's guidance, this project would have been dead.
 
