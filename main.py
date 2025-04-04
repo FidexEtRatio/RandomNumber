@@ -4,6 +4,7 @@ from seed_data import SeedData
 from radio import get_data_for_seed
 from generator import generate
 from audio_entropy import calculate_entropy  # Ensure this function exists
+import time
 
 def main():
     base_data_string = get_data_for_base()
@@ -17,6 +18,8 @@ def main():
 
     seed_data = get_data_for_seed()
     seed = SeedData(seed_data)
+
+    start_time = time.time()
 
     with open('generated_numbers.bin', 'ab') as file:
         for _ in range(total_numbers // batch_size):  # Each batch = 2000 numbers
@@ -44,6 +47,11 @@ def main():
             entropy_values.append(entropy)
             print(f"Batch entropy: {entropy:.5f}")
 
+    end_time = time.time()
+    duration = end_time - start_time
+    rate = total_numbers / duration
+
+    print(f"Rate of generation: {rate} numbers/second")
 
     # Compute entropy statistics
     if entropy_values:
