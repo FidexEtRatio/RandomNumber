@@ -18,6 +18,8 @@ Clone the repository using `git clone https://github.com/FidexEtRatio/RandomNumb
 Install the dependencies using `pip install -r requirements.txt`.
 ### Usage
 Run the script using `python3 ./main.py`.
+#### Note
+Based on the size of data you need to generate, modify in `main.py` the variable `total_numbers`. Multiply `total_numbers` by 2 (`total_numbers * 2`) to get the count of bytes about to be generated. The variable `batch_size` refers to the number of splits done in raw data to calculate live-feed entropy.
 ## Algorithm
 The algorithm uses two main seeds and a secondary one to generate random raw data.
 
