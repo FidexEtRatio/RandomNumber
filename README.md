@@ -8,7 +8,7 @@ The purpose of this project is to write an implementation of a TRNG, using sourc
 - Images of the Sun captured by SOHO in different spectral filters
 - Radio channel data from different radios around the world
 ## Security
-The data used for testing can be found in `./Results/data.bin`. Additionally, in the same directory a report file produces by the NIST test suite can be found under the name `report.txt`.
+The data used for testing can be found in `./Results/data.bin`. Additionally, in the same directory a report file produced by the NIST test suite can be found under the name `report.txt`.
 
 Different pictures of statistical results and a histogram can be found in the formerly mentioned directory.
 ## Setup
@@ -19,7 +19,7 @@ Install the dependencies using `pip install -r requirements.txt`.
 ### Usage
 Run the script using `python3 ./main.py`.
 #### Note
-Based on the size of data you need to generate, modify in `main.py` the variable `total_numbers`. Multiply `total_numbers` by 2 (`total_numbers * 2`) to get the count of bytes about to be generated. The variable `batch_size` refers to the number of splits done in raw data to calculate live-feed entropy.
+Based on the size of data you need to generate, modify in `main.py` the variable `total_numbers`. Multiply `total_numbers` by 2 (`total_numbers * 2`) to get the number of bytes about to be generated. The variable `batch_size` refers to the number of splits done in raw data to calculate live-feed entropy. It is recommended to be a value somewhere between `1\4` or `1\8` of the `total_numbers` value.
 ## Algorithm
 The algorithm uses two main seeds and a secondary one to generate random raw data.
 
