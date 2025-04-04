@@ -13,7 +13,7 @@ The data used for testing can be found in `./Results/data.bin`. Additionally, in
 Different pictures of statistical results and a histogram can be found in the formerly mentioned directory.
 ## Setup
 ### Clone the repository
-Clone the repository using `git clone https://github.com/Kessel113/RandomNumber`.
+Clone the repository using `git clone https://github.com/FidexEtRatio/RandomNumber`.
 ### Install dependencies
 Install the dependencies using `pip install -r requirements.txt`.
 ### Usage
