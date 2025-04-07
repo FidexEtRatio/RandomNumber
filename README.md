@@ -20,7 +20,7 @@ The results of the analysis mentioned above can be found in the `Results` direct
 - Compression ratio = how much the file can be reduced in size after a compression
 - Pearson correlation = a statistical measure that describes the linear relationship between two varibles
     - +1 indicates a positive linear relationship, *id est* as one increases, the other one increases too
-    - -1 indicates e nagetive linear relationship, *id est* as one increases, the other one decreases
+    - -1 indicates a negative linear relationship, *id est* as one increases, the other one decreases
     - 0 indicates that there is no linear relationship between the variables
 ## Setup
 ### Clone the repository
