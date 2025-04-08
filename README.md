@@ -30,7 +30,7 @@ Clone the repository using `git clone https://github.com/RexGloriae/RandomNumber
 ### Install dependencies
 Install the dependencies using `pip install -r requirements.txt`.
 ### Usage
-Run the script using `python3 ./main.py`.
+Run the script using `python3 ./src/main.py`.
 #### Note
 Based on the size of data you need to generate, modify in `main.py` the variable `total_numbers`. Multiply `total_numbers` by 2 (`total_numbers * 2`) to get the number of bytes about to be generated. The variable `batch_size` refers to the number of splits done in raw data to calculate live-feed entropy. It is recommended to be a value somewhere between `1\4` or `1\8` of the `total_numbers` value.
 To select the output file, simply change the name of the file in line `24` to the desired path.
