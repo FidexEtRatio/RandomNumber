@@ -1,4 +1,5 @@
 <img src = "https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blu" />
+
 # Implementation of a True Random Number Generator (TRNG)
 ## Overview
 The purpose of this project is to write an implementation of a TRNG, using sources of natural origin, _id est_ pictures of the Sun from the Solar and Heliospheric Observatory (SOHO), and radio feeds from around the world.
